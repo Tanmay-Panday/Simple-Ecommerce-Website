@@ -46,20 +46,34 @@ if (MainImg) {
 const addToCartBtn = document.getElementById('addToCartBtn');
 if (addToCartBtn) {
     addToCartBtn.addEventListener('click', () => {
-        const product = {
-            id: Date.now(), // Unique ID for removal
-            name: document.getElementById('pro-name').innerText,
-            price: document.getElementById('pro-price').innerText,
-            size: document.getElementById('pro-size').value,
-            quantity: document.getElementById('pro-qty').value,
-            image: document.getElementById('MainImg').src
-        };
+        // Get values from the DOM
+        const qtyValue = document.getElementById('pro-qty').value;
+        const sizeValue = document.getElementById('pro-size').value;
 
-        // Basic validation
-        if (product.size === "Select Size") {
+        // --- VALIDATION START ---
+        
+        // Check if size is selected
+        if (sizeValue === "Select Size") {
             alert("Please select a size");
             return;
         }
+
+        // Check if quantity is valid (Must be greater than 0)
+        if (qtyValue <= 0) {
+            alert("Quantity must be at least 1");
+            return;
+        }
+
+        // --- VALIDATION END ---
+
+        const product = {
+            id: Date.now(), // Unique ID
+            name: document.getElementById('pro-name').innerText,
+            price: document.getElementById('pro-price').innerText,
+            size: sizeValue,
+            quantity: qtyValue,
+            image: document.getElementById('MainImg').src
+        };
 
         // Get existing cart or initialize empty array
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
@@ -85,6 +99,7 @@ function loadCart() {
 
     cartBody.innerHTML = ''; // Clear current rows
 
+    // Check if cart is empty
     if (cart.length === 0) {
         emptyMsg.style.display = 'block';
         if(subtotalEl) subtotalEl.innerText = "$ 0";
@@ -97,8 +112,7 @@ function loadCart() {
     let total = 0;
 
     cart.forEach((item, index) => {
-        // Calculate subtotal for this item (Price * Qty)
-        // Remove '$' and convert to float
+        // Calculate subtotal for this item
         let price = parseFloat(item.price.replace('$', '')); 
         let itemSubtotal = price * item.quantity;
         total += itemSubtotal;
@@ -108,8 +122,7 @@ function loadCart() {
             <td><a href="#" onclick="removeFromCart(${index})"><i class="far fa-times-circle"></i></a></td>
             <td><img src="${item.image}" alt=""></td>
             <td>${item.name}</td>
-            <td>${item.size}</td>
-            <td>${item.price}</td>
+            <td>${item.size}</td> <td>${item.price}</td>
             <td><input type="number" value="${item.quantity}" readonly></td>
             <td>$${itemSubtotal.toFixed(2)}</td>
         `;
