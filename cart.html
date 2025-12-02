@@ -44,38 +44,17 @@
                     <td>Remove</td>
                     <td>Image</td>
                     <td>Product</td>
-                    <td>Price</td>
+                    <td>Size</td> <td>Price</td>
                     <td>Quantity</td>
                     <td>Subtotal</td>
                 </tr>
             </thead>
-            <tbody>
-                <tr>
-                    <td><a href="#"><i class="far fa-times-circle"></i></a></td>
-                    <td><img src="img/products/f1.jpg" alt=""></td>
-                    <td>Cartoon Astronaut T-Shirts</td>
-                    <td>$118.19</td>
-                    <td><input type="number" value="1"></td>
-                    <td>$118.19</td>
-                </tr>
-                <tr>
-                    <td><a href="#"><i class="far fa-times-circle"></i></a></td>
-                    <td><img src="img/products/f2.jpg" alt=""></td>
-                    <td>Cartoon Astronaut T-Shirts</td>
-                    <td>$118.19</td>
-                    <td><input type="number" value="1"></td>
-                    <td>$118.19</td>
-                </tr>
-                <tr>
-                    <td><a href="#"><i class="far fa-times-circle"></i></a></td>
-                    <td><img src="img/products/f3.jpg" alt=""></td>
-                    <td>Cartoon Astronaut T-Shirts</td>
-                    <td>$118.19</td>
-                    <td><input type="number" value="1"></td>
-                    <td>$118.19</td>
-                </tr>
+            <tbody id="cart-body">
             </tbody>
         </table>
+        <div id="empty-cart-msg" style="display:none; text-align:center; padding: 20px;">
+            <h3>Your Cart is Empty</h3>
+        </div>
     </section>
 
     <section id="cart-add" class="section-p1">
@@ -92,7 +71,7 @@
             <table>
                 <tr>
                     <td>Cart Subtotal</td>
-                    <td>$ 335</td>
+                    <td id="cart-subtotal">$ 0</td>
                 </tr>
                 <tr>
                     <td>Shipping</td>
@@ -100,7 +79,7 @@
                 </tr>
                 <tr>
                     <td><strong>Total</strong></td>
-                    <td><strong>$ 335</strong></td>
+                    <td id="cart-total"><strong>$ 0</strong></td>
                 </tr>
             </table>
             <button class="normal">Proceed to checkout</button>

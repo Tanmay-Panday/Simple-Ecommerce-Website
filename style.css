@@ -1,3 +1,55 @@
+/* Updated Cart CSS to handle Size Column */
+#cart {
+    overflow-x: auto;
+}
+
+#cart table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    white-space: nowrap;
+}
+
+#cart table img {
+    width: 70px;
+}
+
+/* Updated column widths for 7 columns */
+#cart table td:nth-child(1) { width: 100px; text-align: center; } /* Remove */
+#cart table td:nth-child(2) { width: 150px; text-align: center; } /* Image */
+#cart table td:nth-child(3) { width: 250px; text-align: center; } /* Product */
+#cart table td:nth-child(4) { width: 100px; text-align: center; } /* Size - New */
+#cart table td:nth-child(5) { width: 150px; text-align: center; } /* Price */
+#cart table td:nth-child(6) { width: 150px; text-align: center; } /* Quantity */
+#cart table td:nth-child(7) { width: 150px; text-align: center; } /* Subtotal */
+
+#cart table td:nth-child(6) input {
+    width: 70px;
+    padding: 10px 5px 10px 15px;
+}
+
+#cart table thead {
+    border: 1px solid #e2e9e1;
+    border-left: none;
+    border-right: none;
+}
+
+#cart table thead td {
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 13px;
+    padding: 18px 0;
+}
+
+#cart table tbody tr td {
+    padding-top: 15px;
+}
+
+#cart table tbody td {
+    font-size: 13px;
+}
+
+/* ... keep existing CSS for other sections ... */
 @import url('https://fonts.googleapis.com/css2?family=Spartan:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
 * {
@@ -1122,57 +1174,6 @@ footer .copyright {
         width: 100%;
         margin-bottom: 30px;
     }
-}
-
-
-
-/* Cart Page */
-#cart {
-    overflow-x: auto;
-}
-
-#cart table {
-    width: 100%;
-    border-collapse: collapse;
-    table-layout: fixed;
-    white-space: nowrap;
-}
-
-#cart table img {
-    width: 70px;
-}
-
-#cart table td:nth-child(1) { width: 100px; text-align: center; }
-#cart table td:nth-child(2) { width: 150px; text-align: center; }
-#cart table td:nth-child(3) { width: 250px; text-align: center; }
-#cart table td:nth-child(4), 
-#cart table td:nth-child(5), 
-#cart table td:nth-child(6) { width: 150px; text-align: center; }
-
-#cart table td:nth-child(5) input {
-    width: 70px;
-    padding: 10px 5px 10px 15px;
-}
-
-#cart table thead {
-    border: 1px solid #e2e9e1;
-    border-left: none;
-    border-right: none;
-}
-
-#cart table thead td {
-    font-weight: 700;
-    text-transform: uppercase;
-    font-size: 13px;
-    padding: 18px 0;
-}
-
-#cart table tbody tr td {
-    padding-top: 15px;
-}
-
-#cart table tbody td {
-    font-size: 13px;
 }
 
 /* Cart Add Section (Coupon & Subtotal) */

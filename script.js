@@ -1,55 +1,129 @@
-const bar = document.getElementById('bar');     // hamburger menu icon
-const close = document.getElementById('close');     // close button icon
-const nav = document.getElementById('navbar');      // navbar element
+const bar = document.getElementById('bar');
+const close = document.getElementById('close');
+const nav = document.getElementById('navbar');
 
-// If the hamburger menu icon exists, add a click event listener
 if (bar) {
     bar.addEventListener('click', () => {
-        // add the 'active' class to the navbar to show it (slide in from right)
         nav.classList.add('active');
     })
 }
 
-// If the close button exists, add a click event listener
 if (close) {
     close.addEventListener('click', () => {
-        // Remove the 'active' class from the navbar to hide it
         nav.classList.remove('active');
     })
 }
 
+// === Single Product Page Logic ===
 var MainImg = document.getElementById("MainImg");
 var smallimg = document.getElementsByClassName("small-img");
 
-// 1. Logic to change main image when clicking small images (Gallery)
+// 1. Image Gallery Logic
 if (MainImg) {
     if(smallimg.length > 0) {
-        smallimg[0].onclick = function() {
-            MainImg.src = smallimg[0].src;
-        }
-        smallimg[1].onclick = function() {
-            MainImg.src = smallimg[1].src;
-        }
-        smallimg[2].onclick = function() {
-            MainImg.src = smallimg[2].src;
-        }
-        smallimg[3].onclick = function() {
-            MainImg.src = smallimg[3].src;
+        for(let i=0; i<smallimg.length; i++){
+            smallimg[i].onclick = function() {
+                MainImg.src = smallimg[i].src;
+            }
         }
     }
     
-    // 2. Logic to load the correct product image from the URL parameter
-    // This allows sproduct.html to work for ANY product
+    // 2. Load Image from URL (for dynamic product loading)
     const urlParams = new URLSearchParams(window.location.search);
     const imageParam = urlParams.get('image');
 
     if (imageParam) {
         MainImg.src = imageParam;
-        
-        // Optional: Reset small gallery images to match the main image 
-        // (Since we don't have separate gallery images for every product in this tutorial)
         for(let i=0; i<smallimg.length; i++){
             smallimg[i].src = imageParam;
         }
     }
+}
+
+// === Shopping Cart Logic ===
+
+// Function to Add Item to Cart (called from sproduct.html)
+const addToCartBtn = document.getElementById('addToCartBtn');
+if (addToCartBtn) {
+    addToCartBtn.addEventListener('click', () => {
+        const product = {
+            id: Date.now(), // Unique ID for removal
+            name: document.getElementById('pro-name').innerText,
+            price: document.getElementById('pro-price').innerText,
+            size: document.getElementById('pro-size').value,
+            quantity: document.getElementById('pro-qty').value,
+            image: document.getElementById('MainImg').src
+        };
+
+        // Basic validation
+        if (product.size === "Select Size") {
+            alert("Please select a size");
+            return;
+        }
+
+        // Get existing cart or initialize empty array
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        cart.push(product);
+        localStorage.setItem('cart', JSON.stringify(cart));
+        
+        alert("Item added to cart!");
+    });
+}
+
+// Function to Load Cart Items (called on cart.html)
+const cartBody = document.getElementById('cart-body');
+if (cartBody) {
+    loadCart();
+}
+
+function loadCart() {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const cartBody = document.getElementById('cart-body');
+    const emptyMsg = document.getElementById('empty-cart-msg');
+    const subtotalEl = document.getElementById('cart-subtotal');
+    const totalEl = document.getElementById('cart-total');
+
+    cartBody.innerHTML = ''; // Clear current rows
+
+    if (cart.length === 0) {
+        emptyMsg.style.display = 'block';
+        if(subtotalEl) subtotalEl.innerText = "$ 0";
+        if(totalEl) totalEl.innerText = "$ 0";
+        return;
+    } else {
+        emptyMsg.style.display = 'none';
+    }
+
+    let total = 0;
+
+    cart.forEach((item, index) => {
+        // Calculate subtotal for this item (Price * Qty)
+        // Remove '$' and convert to float
+        let price = parseFloat(item.price.replace('$', '')); 
+        let itemSubtotal = price * item.quantity;
+        total += itemSubtotal;
+
+        let row = document.createElement('tr');
+        row.innerHTML = `
+            <td><a href="#" onclick="removeFromCart(${index})"><i class="far fa-times-circle"></i></a></td>
+            <td><img src="${item.image}" alt=""></td>
+            <td>${item.name}</td>
+            <td>${item.size}</td>
+            <td>${item.price}</td>
+            <td><input type="number" value="${item.quantity}" readonly></td>
+            <td>$${itemSubtotal.toFixed(2)}</td>
+        `;
+        cartBody.appendChild(row);
+    });
+
+    if(subtotalEl) subtotalEl.innerText = `$ ${total.toFixed(2)}`;
+    if(totalEl) totalEl.innerText = `$ ${total.toFixed(2)}`;
+}
+
+// Function to Remove Item
+function removeFromCart(index) {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    cart.splice(index, 1); // Remove item at index
+    localStorage.setItem('cart', JSON.stringify(cart));
+    loadCart(); // Re-render cart
 }
